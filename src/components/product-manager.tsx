@@ -12,9 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
-import { Package, PackagePlus, Sparkles, Trash2 } from 'lucide-react';
+import { Package, PackagePlus, Trash2 } from 'lucide-react';
 import type { ProductCategory } from '@/lib/types';
-import { ProductNameGenerator } from './product-name-generator';
 
 const productSchema = z.object({
   name: z.string().min(1, 'Nome do produto é obrigatório'),
@@ -52,10 +51,6 @@ export function ProductManager() {
     dispatch({ type: 'REMOVE_PRODUCT', payload: { id } });
     toast({ variant: "destructive", title: 'Produto removido!', description: `${name} foi removido.` });
   };
-  
-  const setProductName = (name: string) => {
-    form.setValue('name', name);
-  };
 
   return (
     <Card>
@@ -69,27 +64,19 @@ export function ProductManager() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="flex items-end gap-2">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem className="flex-grow">
-                    <FormLabel>Nome do Produto</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Ex: Leite" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <ProductNameGenerator onSelectName={setProductName}>
-                  <Button type="button" variant="outline" size="icon" className="shrink-0 text-accent hover:text-accent">
-                      <Sparkles className="h-5 w-5" />
-                      <span className="sr-only">Gerar nome do produto</span>
-                  </Button>
-              </ProductNameGenerator>
-            </div>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome do Produto</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Ex: Leite" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}
